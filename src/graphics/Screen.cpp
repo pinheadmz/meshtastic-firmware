@@ -1877,7 +1877,7 @@ int32_t Screen::runOnce()
     if (showingNormalScreen) {
         // standard screen loop handling here
         if (config.display.auto_screen_carousel_secs > 0 &&
-            !Throttle::isWithinTimespanMs(lastScreenTransition, config.display.auto_screen_carousel_secs * 1000)) {
+            !Throttle::isWithinTimespanMs(lastScreenTransition, 3 * 1000)) {
 
 // If an E-Ink display struggles with fast refresh, force carousel to use full refresh instead
 // Carousel is potentially a major source of E-Ink display wear
@@ -2063,14 +2063,14 @@ void Screen::setFrames(FrameFocus focus)
 #endif
 
     // If we have a text message - show it next, unless it's a phone message and we aren't using any special modules
-    if (devicestate.has_rx_text_message && shouldDrawMessage(&devicestate.rx_text_message)) {
+    if (false && devicestate.has_rx_text_message && shouldDrawMessage(&devicestate.rx_text_message)) {
         fsi.positions.textMessage = numframes;
         normalFrames[numframes++] = drawTextMessageFrame;
     }
 
     // then all the nodes
     // We only show a few nodes in our scrolling list - because meshes with many nodes would have too many screens
-    size_t numToShow = min(numMeshNodes, 4U);
+    size_t numToShow = 0; // min(numMeshNodes, 4U);
     for (size_t i = 0; i < numToShow; i++)
         normalFrames[numframes++] = drawNodeInfo;
 
